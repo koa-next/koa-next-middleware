@@ -1,0 +1,42 @@
+{
+  "name": "koa-next-middleware",
+  "version": "1.0.0",
+  "description": "koa next middleware",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tslint": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "dev": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koa-next/koa-next-middleware.git"
+  },
+  "keywords": [
+    "koa.js",
+    "next.js",
+    "middleware"
+  ],
+  "author": "PLDaily <pcd12321@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koa-next/koa-next-middleware/issues"
+  },
+  "homepage": "https://github.com/koa-next/koa-next-middleware#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run tslint && git add ."
+    }
+  },
+  "dependencies": {
+    "koa": "^2.7.0",
+    "typescript": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.48",
+    "husky": "^1.3.1",
+    "tslint": "^5.12.1"
+  }
+}
