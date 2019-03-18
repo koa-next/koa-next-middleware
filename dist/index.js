@@ -8,28 +8,51 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-function nextsender(ctx, app) {
+const url_1 = require("url");
+function nextsender(ctx, app, args) {
     return __awaiter(this, void 0, void 0, function* () {
+        const { req, res, path } = ctx;
+        const parsedUrl = url_1.parse(`${req.url}`, true);
+        const { pathname, query } = parsedUrl;
+        const ssrCache = args.cache;
+        const key = `${req.url}`;
         if (!app.prepared) {
             yield app.prepare();
             app.prepared = true;
         }
+        if (ssrCache && !/\/_next\//.test(path)) {
+            if (ssrCache.has(key)) {
+                ctx.body = ssrCache.get(key);
+                return;
+            }
+            yield app
+                .renderToHTML(req, res, pathname, query)
+                .then((html) => {
+                ssrCache.set(key, html);
+                ctx.body = html;
+            })
+                .catch((err) => {
+                app.renderError(err, req, res, pathname, query);
+            });
+            return;
+        }
         const requestHandler = app.getRequestHandler();
-        yield requestHandler(ctx.req, ctx.res);
+        yield requestHandler(req, res, parsedUrl);
     });
 }
 exports.nextsender = nextsender;
-exports.default = (app) => (ctx, next) => __awaiter(this, void 0, void 0, function* () {
+exports.default = (app, args = {}) => (ctx, next) => __awaiter(this, void 0, void 0, function* () {
     const path = ctx.path;
     if (/\/_next\//.test(path)) {
-        yield nextsender(ctx, app);
+        yield nextsender(ctx, app, args);
+        return;
     }
     else {
         yield next();
         if (ctx.status !== 404 || ctx.method !== 'GET') {
             return;
         }
-        yield nextsender(ctx, app);
+        yield nextsender(ctx, app, args);
     }
 });
 //# sourceMappingURL=index.js.map
