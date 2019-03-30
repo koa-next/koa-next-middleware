@@ -17,6 +17,10 @@ export async function nextsender(ctx: Context, app: any, args: IArgs) {
     app.prepared = true;
   }
 
+  if (ctx.csrf) {
+    req.headers.csrf = ctx.csrf;
+  }
+
   if (ssrCache && !/\/_next\//.test(path)) {
     if (ssrCache.has(key)) {
       ctx.body = ssrCache.get(key);
