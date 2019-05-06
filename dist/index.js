@@ -41,6 +41,7 @@ function nextsender(ctx, app, args) {
         }
         const requestHandler = app.getRequestHandler();
         yield requestHandler(req, res, parsedUrl);
+        ctx.respond = false;
     });
 }
 exports.nextsender = nextsender;

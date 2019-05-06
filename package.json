@@ -1,6 +1,6 @@
 {
   "name": "koa-next-middleware",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "koa next middleware",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

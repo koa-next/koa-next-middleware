@@ -40,6 +40,7 @@ export async function nextsender(ctx: Context, app: any, args: IArgs) {
 
   const requestHandler = app.getRequestHandler();
   await requestHandler(req, res, parsedUrl);
+  ctx.respond = false;
 }
 
 export default (app: any, args = {}) => async (ctx: Context, next: () => Promise<any>) => {
